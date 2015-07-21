@@ -5,7 +5,8 @@
 #pragma comment (lib, "opencv_imgproc2410d.lib")
 #pragma comment (lib, "opencv_objdetect2410d.lib")
 
-int GlobalParames::n_landmark = 68;
+int GlobalParams::n_landmark = 68;
+int GlobalParams::n_initial = 5;
 
 int main() {
 	Joint joint;

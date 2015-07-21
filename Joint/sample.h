@@ -28,8 +28,8 @@ struct BoundingBox : public cv::Rect_<double>
 
 struct Sample
 {
-	Sample(Image &image, Shape &ground_truth, BoundingBox &bb) :
-		image(image), ground_truth(ground_truth), bb(bb) {
+	Sample(Image &image, Shape &ground_truth, BoundingBox &bb, bool isFace) :
+		image(image), ground_truth(ground_truth), bb(bb), isFace(isFace) {
 
 	}
 
