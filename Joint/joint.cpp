@@ -78,7 +78,7 @@ void Joint::adjust(Image &image, Shape &shape, BoundingBox &bb) {
 	}
 }
 
-Shape Joint::project(const Shape &shape, const BoundingBox &bb) {
+Shape Joint::Project(const Shape &shape, const BoundingBox &bb) {
 	Shape ret(shape.rows, 2);
 	for (int i = 0; i < shape.rows; ++i) {
 		ret(i, 0) = 2 * (shape(i, 0) - bb.center.x) / bb.width;
@@ -87,7 +87,7 @@ Shape Joint::project(const Shape &shape, const BoundingBox &bb) {
 	return ret;
 }
 
-Shape Joint::re_project(const Shape &shape, const BoundingBox &bb) {
+Shape Joint::ReProject(const Shape &shape, const BoundingBox &bb) {
 	Shape ret(shape.rows, 2);
 	for (int i = 0; i < shape.rows; ++i) {
 		ret(i, 0) = shape(i, 0) * bb.width * 0.5 + bb.center.x;
@@ -138,10 +138,117 @@ void Joint::augment() {
 				index = rng.uniform(0, samples_size);
 			} while (index == i);
 
-			Shape projected = Joint::project(samples[index].ground_truth, samples[index].bb);
-			samples[i].current = Joint::re_project(projected, samples[i].bb);
+			Shape projected = Joint::Project(samples[index].ground_truth, samples[index].bb);
+			samples[i].current = Joint::ReProject(projected, samples[i].bb);
 
 			augmented_samples.push_back(samples[i]);
 		}
 	}
+}
+
+Shape Joint::GetMeanShape(const vector<Sample>& samples) {
+	Mat_<double> result = Mat::zeros(samples[0].ground_truth.rows, 2, CV_64FC1);
+	int count = 0;
+	for (int i = 0; i < samples.size(); i++) {
+		if (samples[i].label == 1) {
+			result += Project(samples[i].ground_truth, samples[i].bb);
+			count++;
+		}
+	}
+	return  1.0 / count * result;
+}
+
+Shape Joint::GetShapeResidual(const Sample &sample, const Shape &meanShape) {
+	Mat_<double> rotation;
+	double scale;
+	Mat_<double> residual = Project(sample.ground_truth, sample.bb)
+		- Project(sample.current, sample.bb);
+	SimilarityTransform(meanShape, Project(sample.current, sample.bb),
+		rotation, scale);
+	transpose(rotation, rotation);
+	return scale * residual * rotation;
+}
+
+void Joint::SimilarityTransform(const Mat_<double> &shape1, const Mat_<double> &shape2,
+	Mat_<double>& rotation, double& scale) {
+	rotation = Mat::zeros(2, 2, CV_64FC1);
+	scale = 0;
+
+	// centering the data
+	double center_x1 = 0;
+	double center_y1 = 0;
+	double center_x2 = 0;
+	double center_y2 = 0;
+
+	for (int i = 0; i < shape1.rows; i++) {
+		center_x1 += shape1(i, 0);
+		center_y1 += shape1(i, 1);
+		center_x2 += shape2(i, 0);
+		center_y2 += shape2(i, 1);
+	}
+	center_x1 /= shape1.rows;
+	center_x2 /= shape2.rows;
+	center_y1 /= shape1.rows;
+	center_y2 /= shape1.rows;
+
+	Mat_<double> temp1 = shape1.clone();
+	Mat_<double> temp2 = shape2.clone();
+	for (int i = 0; i < shape1.rows; i++) {
+		temp1(i, 0) -= center_x1;
+		temp1(i, 1) -= center_y1;
+		temp2(i, 0) -= center_x2;
+		temp2(i, 1) -= center_y2;
+	}
+
+	Mat_<double> convariance1, convariance2;
+	Mat_<double> mean1, mean2;
+	// calculate covariance matries
+
+	calcCovarMatrix(temp1, convariance1, mean1, CV_COVAR_COLS);
+	calcCovarMatrix(temp2, convariance2, mean2, CV_COVAR_COLS);
+
+	double s1 = sqrt(norm(convariance1));
+	double s2 = sqrt(norm(convariance2));
+	scale = s1 / s2;
+	temp1 = 1.0 / s1 * temp1;
+	temp2 = 1.0 / s2 * temp2;
+
+	double num = 0;
+	double den = 0;
+
+	for (int i = 0; i < shape1.rows; i++) {
+		num = num + temp1(i, 1) * temp2(i, 0) - temp1(i, 0) * temp2(i, 1);
+		den = den + temp1(i, 0) * temp2(i, 0) + temp1(i, 1) * temp2(i, 1);
+	}
+	double norm = sqrt(num * num + den * den);
+	double sin_theta = num / norm;
+	double cos_theta = den / norm;
+	rotation(0, 0) = cos_theta;
+	rotation(0, 1) = -sin_theta;
+	rotation(1, 0) = sin_theta;
+	rotation(1, 1) = cos_theta;
+}
+
+double Joint::CalculateCovar(const vector<double>& v1, const vector<double>& v2) {
+	Mat_<double> v_1(v1);
+	Mat_<double> v_2(v2);
+	double mean1 = mean(v_1)[0];
+	double mean2 = mean(v_2)[0];
+	v_1 = v_1 - mean1;
+	v_2 = v_2 - mean2;
+	return mean(v_1.mul(v_2))[0];
+}
+
+double Joint::CalculateVar(const vector<double>& v1) {
+	if (v1.size() == 0){
+		return 0;
+	}
+	Mat_<double> v2(v1);
+	return CalculateVar(v2);
+}
+
+double Joint::CalculateVar(const Mat_<double> & v1) {
+	double mean1 = mean(v1)[0];
+	double mean2 = mean(v1.mul(v1))[0];
+	return mean2 - mean1 * mean1;
 }

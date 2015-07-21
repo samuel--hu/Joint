@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="joint.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="joint.h" />
