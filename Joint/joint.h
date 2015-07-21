@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <string>
-#include "tree.h"
+#include "sample.h"
 
 using namespace std;
 using namespace cv;
@@ -19,8 +19,8 @@ struct GlobalParams
 	// total stages 
 	static int stages;
 
-	static double radius[10];
-	static int numFeats[10];
+	static double radius[5];
+	static int numFeats[5];
 	static int depth;
 	static int numTrees;
 

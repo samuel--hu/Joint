@@ -65,18 +65,18 @@ public:
 
 	void SplitNode(
 		const spliteType &sType,
-		const vector<Sample> &samples,
-		const Mat_<double> &meanShape,
-		const vector<int> &sample_idx,
+		const std::vector<Sample> &samples,
+		const cv::Mat_<double> &meanShape,
+		const std::vector<int> &sample_idx,
 		// output
 		double &threshold,
-		Point2d* feat,
-		vector<int> &lcID,
-		vector<int> &rcID
+		cv::Point2d* feat,
+		std::vector<int> &lcID,
+		std::vector<int> &rcID
 		);
 
-	void Train(vector<Sample> &samples,
-		const Mat_<double> &meanShape,
+	void Train(std::vector<Sample> &samples,
+		const cv::Mat_<double> &meanShape,
 		int stages,
 		int landmarkID);
 };
