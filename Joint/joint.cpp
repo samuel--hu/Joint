@@ -169,7 +169,7 @@ Shape Joint::GetShapeResidual(const Sample &sample, const Shape &meanShape) {
 	return scale * residual * rotation;
 }
 
-void Joint::SimilarityTransform(const Mat_<double> &shape1, const Mat_<double> &shape2,
+void Joint::SimilarityTransform(const Shape &shape1, const Shape &shape2,
 	Mat_<double>& rotation, double& scale) {
 	rotation = Mat::zeros(2, 2, CV_64FC1);
 	scale = 0;

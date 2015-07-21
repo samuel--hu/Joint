@@ -154,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="joint.h" />
+    <ClInclude Include="randomForest.h" />
     <ClInclude Include="sample.h" />
     <ClInclude Include="tree.h" />
   </ItemGroup>

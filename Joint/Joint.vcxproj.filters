@@ -4,6 +4,7 @@
     <ClInclude Include="joint.h" />
     <ClInclude Include="tree.h" />
     <ClInclude Include="sample.h" />
+    <ClInclude Include="randomForest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="joint.cpp" />
