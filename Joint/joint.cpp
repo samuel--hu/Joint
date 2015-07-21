@@ -10,8 +10,8 @@ Shape Joint::loadShape(const string file) {
 	getline(fin, temp);
 	getline(fin, temp);
 
-	Shape shape(GlobalParames::n_landmark, 2);
-	for (int i = 0; i < GlobalParames::n_landmark; ++i) {
+	Shape shape(GlobalParams::n_landmark, 2);
+	for (int i = 0; i < GlobalParams::n_landmark; ++i) {
 		fin >> shape(i, 0) >> shape(i, 1);
 	}
 	fin.close();
