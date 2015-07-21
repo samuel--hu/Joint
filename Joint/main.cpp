@@ -1,14 +1,14 @@
-#include "crf.h"
+#include "joint.h"
+
+#pragma comment (lib, "opencv_core2410d.lib")
+#pragma comment (lib, "opencv_highgui2410d.lib")
+#pragma comment (lib, "opencv_imgproc2410d.lib")
+#pragma comment (lib, "opencv_objdetect2410d.lib")
+
+int GlobalParames::n_landmark = 68;
 
 int main() {
-	//set global parameters
-	GlobalParams::landmarks = 27;
-
-	//train a model
-	CRF crf;
-	crf.loadSamples("lfpw");
-	crf.train();
-	crf.save("model");
-
+	Joint joint;
+	joint.loadSample("E://database//lfpw//train.txt");
 	return 0;
 }
