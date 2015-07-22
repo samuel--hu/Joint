@@ -16,8 +16,7 @@ void Tree::Train(vector<Sample> &samples,
 	int num_nodes_iter;
 	int num_split;
 	for (int i = 0; i < samples.size(); i++) {
-		// update weight of each sample
-		samples[i].weight = exp(-samples[i].label * samples[i].weight);
+		
 		// push the indies of training samples into root node
 		nodes[0].sample_idx.push_back(i);
 	}
@@ -54,7 +53,7 @@ void Tree::Train(vector<Sample> &samples,
 				}
 			}
 			else {
-				//separate the training samples into left and right path
+				// separate the training samples into left and right path
 				// splite the tree
 				// In each internal node, we randomly choose to either minimize the 
 				// binary entropy for classification (with probablity p)
@@ -109,6 +108,16 @@ void Tree::Train(vector<Sample> &samples,
 		else {
 			numNodes = num_nodes;
 			numLeafNodes = num_leafnodes;
+		}
+	}
+
+	// mark leaf nodes.
+	// clear sample indices in each node
+	leafID.clear();
+	for (int i = 0; i < numNodes; i++) {
+		nodes[i].sample_idx.clear();
+		if (nodes[i].isLeaf) {
+			leafID.push_back(i);
 		}
 	}
 }
