@@ -148,12 +148,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="daxpy.c" />
+    <ClCompile Include="ddot.c" />
+    <ClCompile Include="dnrm2.c" />
+    <ClCompile Include="dscal.c" />
     <ClCompile Include="joint.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="randomForest.cpp" />
     <ClCompile Include="tree.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="blas.h" />
+    <ClInclude Include="blasp.h" />
     <ClInclude Include="joint.h" />
     <ClInclude Include="randomForest.h" />
     <ClInclude Include="sample.h" />

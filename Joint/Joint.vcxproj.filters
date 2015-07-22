@@ -5,11 +5,17 @@
     <ClInclude Include="tree.h" />
     <ClInclude Include="sample.h" />
     <ClInclude Include="randomForest.h" />
+    <ClInclude Include="blas.h" />
+    <ClInclude Include="blasp.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="joint.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="tree.cpp" />
     <ClCompile Include="randomForest.cpp" />
+    <ClCompile Include="daxpy.c" />
+    <ClCompile Include="ddot.c" />
+    <ClCompile Include="dnrm2.c" />
+    <ClCompile Include="dscal.c" />
   </ItemGroup>
 </Project>
