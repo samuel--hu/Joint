@@ -44,12 +44,12 @@ public:
 
 	static Shape GetMeanShape(const vector<Sample> &samples);
 	static Shape GetShapeResidual(const Sample &sample, const Shape &meanShape);
-	static void SimilarityTransform(const Mat_<double> &shape1, const Mat_<double> &shape2, Mat_<double>& rotation, double& scale);
+	static void SimilarityTransform(const Shape &shape1, const Shape &shape2, Mat_<double>& rotation, double& scale);
 
 	static double CalculateCovar(const vector<double>& v1, const vector<double>& v2);
 	static double CalculateVar(const vector<double>& v1);
 	static double CalculateVar(const Mat_<double> & v1);
-
+	static bool ScoreAscending(const Sample& s1, const Sample& s2);
 public:
 
 	vector<Sample> samples;

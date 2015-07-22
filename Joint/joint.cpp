@@ -169,7 +169,7 @@ Shape Joint::GetShapeResidual(const Sample &sample, const Shape &meanShape) {
 	return scale * residual * rotation;
 }
 
-void Joint::SimilarityTransform(const Mat_<double> &shape1, const Mat_<double> &shape2,
+void Joint::SimilarityTransform(const Shape &shape1, const Shape &shape2,
 	Mat_<double>& rotation, double& scale) {
 	rotation = Mat::zeros(2, 2, CV_64FC1);
 	scale = 0;
@@ -251,4 +251,8 @@ double Joint::CalculateVar(const Mat_<double> & v1) {
 	double mean1 = mean(v1)[0];
 	double mean2 = mean(v1.mul(v1))[0];
 	return mean2 - mean1 * mean1;
+}
+
+bool Joint::ScoreAscending(const Sample& s1, const Sample& s2) {
+	return s1.score < s2.score;
 }
