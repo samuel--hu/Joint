@@ -49,7 +49,7 @@ public:
 	static double CalculateCovar(const vector<double>& v1, const vector<double>& v2);
 	static double CalculateVar(const vector<double>& v1);
 	static double CalculateVar(const Mat_<double> & v1);
-
+	static bool ScoreAscending(const Sample& s1, const Sample& s2);
 public:
 
 	vector<Sample> samples;

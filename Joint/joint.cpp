@@ -252,3 +252,7 @@ double Joint::CalculateVar(const Mat_<double> & v1) {
 	double mean2 = mean(v1.mul(v1))[0];
 	return mean2 - mean1 * mean1;
 }
+
+bool Joint::ScoreAscending(const Sample& s1, const Sample& s2) {
+	return s1.score < s2.score;
+}
