@@ -10,6 +10,6 @@
     <ClCompile Include="joint.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="tree.cpp" />
-    <ClCompile Include="randomforest.cpp" />
+    <ClCompile Include="randomForest.cpp" />
   </ItemGroup>
 </Project>
